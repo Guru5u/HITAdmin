@@ -3,9 +3,13 @@
 </div> -->
 
 <div class="row">
+ <style type="text/css" scoped>
+        .ui-grid-header-cell { height:60px;
+max-height:60px; } 
+    </style> 
 <div id="grid1" ui-grid="gridOptions1" ui-grid-importer
                               class="grid" ui-grid-edit ui-grid-row-edit
-                              ui-grid-selection ui-grid-exporter ui-grid-pagination ui-grid-auto-resize></div>
+                              ui-grid-selection ui-grid-exporter ui-grid-pagination ui-grid-auto-resize ></div>
 </div>
 
 <div class="row">
@@ -28,9 +32,9 @@
         </div>
         <div class="inner" style="display: inline-block;"><button type="submit" class="btn btn-info" ng-click="testConnection()">Test Connection</button></div>
         <div class="inner" style="display: inline-block;"><button type="submit" class="btn btn-info" ng-click = "addCluster()">Run Job</button></div>
-                <div class="inner" style="display: inline-block;"><textarea rows="1" cols="30">
+                <!-- <div class="inner" style="display: inline-block;"><textarea rows="1" cols="30">
 Paramaters
-</textarea></div>
+</textarea></div> -->
         
   </div>
  </div> 

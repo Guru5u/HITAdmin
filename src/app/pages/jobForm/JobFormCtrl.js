@@ -31,14 +31,13 @@
       /*columnDefs: [
             { field: 'Addr_1', headerCellClass: $scope.highlightFilteredHeader }],*/
       importerDataAddCallback: function(grid1, newObjects) {
+        //document.getElementById('grid1').style.cssText = ".ui-grid-header-cell { height:60px;max-height:60px; }";
         $scope.data1 = $scope.data1.concat(newObjects);
+        
       },
       onRegisterApi: function(gridApi1) {
         $scope.gridApi1 = gridApi1;
         gridApi1.edit.on.afterCellEdit($scope, function(rowEntity, newValue, oldValue) {
-            //Do your REST call here via $hhtp.get or $http.post
-            //This alert just shows which info about the edit is available
-            //alert('Column: ' + columnDefs3.I_KEY );
           });
         gridApi1.rowEdit.on.saveRow($scope, $scope.saveRow1);
       },

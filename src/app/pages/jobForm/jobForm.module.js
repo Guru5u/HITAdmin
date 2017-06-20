@@ -5,7 +5,7 @@
 (function () {
   'use strict';
 
-  angular.module('BlurAdmin.pages.jobForm', ['ui.select', 'ngSanitize', 'ngTouch', 'ui.grid', 'ui.grid.importer', 'ui.grid.rowEdit', 'ui.grid.edit', 'ui.grid.pagination'])
+  angular.module('BlurAdmin.pages.jobForm', ['ui.select', 'ngSanitize', 'ngTouch', 'ui.grid', 'ui.grid.importer', 'ui.grid.selection','ui.grid.rowEdit', 'ui.grid.edit', 'ui.grid.pagination'])
       .config(routeConfig);
 
   /** @ngInject */
