@@ -5,7 +5,7 @@
 (function () {
   'use strict';
 
-  angular.module('BlurAdmin.pages.jobForm', ['ui.select', 'ngSanitize'])
+  angular.module('BlurAdmin.pages.jobForm', ['ui.select', 'ngSanitize', 'ngTouch', 'ui.grid', 'ui.grid.importer', 'ui.grid.rowEdit', 'ui.grid.edit', 'ui.grid.pagination'])
       .config(routeConfig);
 
   /** @ngInject */
@@ -15,6 +15,7 @@
           url: '/jobForm',
           template : '<ui-view autoscroll="true" autoscroll-body-top></ui-view>',
           abstract: true,
+          controller: 'JobFormCtrl',
           title: 'Job',
           sidebarMeta: {
             icon: 'ion-compose',
@@ -32,7 +33,7 @@
         .state('jobForm.addJob', {
           url: '/addJob',
           templateUrl: 'app/pages/jobForm/layouts/addjobLayouts.html',
-         title: 'Upload Jobs',
+         title: 'Run Spark Jobs',
           sidebarMeta: {
             order: 100,
           },

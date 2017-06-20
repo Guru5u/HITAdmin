@@ -83,14 +83,55 @@
 
 /*************** POST **********************/
 
+/***************************************UI GRID *********************/
+
+$scope.gridOptions1 = {};
+  $scope.gridOptions2 = {};
+
+
+  $scope.data1 = [];
+    $scope.gridOptions1 = {
+      enableGridMenu: true,
+      importerDataAddCallback: function(grid1, newObjects) {
+        $scope.data1 = $scope.data1.concat(newObjects);
+      },
+      onRegisterApi: function(gridApi1) {
+        $scope.gridApi1 = gridApi1;
+        gridApi1.edit.on.afterCellEdit($scope, function(rowEntity, newValue, oldValue) {
+            //Do your REST call here via $hhtp.get or $http.post
+            //This alert just shows which info about the edit is available
+            //alert('Column: ' + columnDefs3.I_KEY );
+          });
+        gridApi1.rowEdit.on.saveRow($scope, $scope.saveRow1);
+      },
+      data: 'data1'
+    };
+
+    $scope.saveRow1 = function(rowEntity) {
+      // create a fake promise - normally you'd use the promise returned by $http or $resource
+      var promise = $q.defer();
+      $scope.gridApi1.rowEdit.setSavePromise(rowEntity, promise.promise);
+
+     // console.log(" rowEntity.I_KEY "+rowEntity.I_KEY  + " === "+rowEntity.I_KEY.length);
+      // fake a delay of 3 seconds whilst the save occurs, return error if gender is "male"
+      $interval(function() {
+          if (rowEntity.Gender === 'male') {
+            alert( 'Ikey cannot be empty');
+            promise.reject();
+          } else {
+            promise.resolve();
+          }
+        }, 3000, 1);
+    };
+
+/**************************************UI GRID***********************/
 
 
 
 
 
 
-
-    $scope.clusterTableData1 = [  
+    $scope.clusterTableData = [  
       {
         "id": 1,
         "name": "cdh4.7.1",

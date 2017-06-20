@@ -5,7 +5,7 @@
 (function () {
   'use strict';
 
-  angular.module('BlurAdmin.pages.clusterForm', ['ui.select', 'ngSanitize'])
+  angular.module('BlurAdmin.pages.clusterForm', ['ui.select', 'ngSanitize', 'ngTouch', 'ui.grid', 'ui.grid.importer', 'ui.grid.rowEdit', 'ui.grid.edit'])
       .config(routeConfig);
 
   /** @ngInject */
