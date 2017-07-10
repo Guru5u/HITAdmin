@@ -20,17 +20,58 @@
   /** @ngInject */
   function AppsCtrl($scope,  $http) {
 
-    /*$http.get('http://rest-service.guides.spring.io/greeting').
-        then(function(response) {
-          alert("response.data "+response.data)
-            //$scope.greeting = response.data;
-        });*/
-    $http.get('http://10.10.200.39:8080/HadoopJobRunner/job/rest/getapps').
-        then(function(response) {          
-            //$scope.appsData = response.data.data.apps;
-        });
+/***************************************UI GRID *********************/
 
-    $scope.appsData = [  
+$scope.gridOptions1 = {};
+  
+  $scope.data1 = [];
+    $scope.gridOptions1 = {
+      enableGridMenu: true,
+      enableFiltering: true,
+      /*importerDataAddCallback: function(grid1, newObjects) {
+        $scope.data1 = $scope.data1.concat(newObjects);
+      },*/
+      onRegisterApi: function(gridApi1) {
+        $scope.gridApi1 = gridApi1;
+        gridApi1.edit.on.afterCellEdit($scope, function(rowEntity, newValue, oldValue) {
+            //Do your REST call here via $hhtp.get or $http.post
+            //This alert just shows which info about the edit is available
+            //alert('Column: ' + columnDefs3.I_KEY );
+          });
+        gridApi1.rowEdit.on.saveRow($scope, $scope.saveRow1);
+      }
+        //data: 'data1'
+      };
+
+      $http.get("http://10.10.200.39:8080/HadoopJobRunner/job/rest/getapps")      
+    .success(function(data) {
+      /*for( var i=0; i<6; i++){
+        data = data.concat(data);
+      }*/
+      $scope.gridOptions1.data = data.data.apps;
+    });
+
+    $scope.saveRow1 = function(rowEntity) {
+      // create a fake promise - normally you'd use the promise returned by $http or $resource
+      var promise = $q.defer();
+      $scope.gridApi1.rowEdit.setSavePromise(rowEntity, promise.promise);
+
+     // console.log(" rowEntity.I_KEY "+rowEntity.I_KEY  + " === "+rowEntity.I_KEY.length);
+      // fake a delay of 3 seconds whilst the save occurs, return error if gender is "male"
+      $interval(function() {
+          if (rowEntity.Gender === 'male') {
+            alert( 'Ikey cannot be empty');
+            promise.reject();
+          } else {
+            promise.resolve();
+          }
+        }, 3000, 1);
+    };
+
+/**************************************UI GRID***********************/
+
+
+    $scope.appsData1 = [  
       {
         "id": 1,
         "name": "cdh4.7.1",

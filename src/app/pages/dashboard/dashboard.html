@@ -2,36 +2,30 @@
 
 
    <div class="widgets">
-
-  <div class="row">
-    <div class="col-md-6">
-      <div ba-panel ba-panel-title="CLUSTERS" ba-panel-class="medium-panel with-scroll">
-        <cluster></cluster> 
-      </div>
-    </div>
-    <div class="col-md-6">
-      <div ba-panel ba-panel-title="APPS" ba-panel-class="medium-panel with-scroll">
-        <!-- <div include-with-scope="app/pages/tables/widgets/editableRowTable.html"></div> -->
-         
-          <apps></apps> 
-      </div>
+    <style type="text/css" scoped>
+        .ui-grid-header-cell { height:60px; max-height:60px; }
+    </style> 
+    <div class="row">
+         <div class="col-md-12">
+          <div ba-panel panel-info ba-panel-title="CLUSTERS" ba-panel-class="with-scroll" style="max-height: 10;overflow-y: scroll;">
+            <cluster></cluster> 
+          </div> 
+         </div>
     </div>
 
-  </div>
+
 
   <div class="row">
-    <div class="col-md-6">
+     <div class="col-md-8">
+      <div ba-panel ba-panel-title="APPS" ba-panel-class="with-scroll">
+       <apps></apps>
+      </div>
+    </div>  
+    <div class="col-md-4">
       <div ba-panel ba-panel-title="SCHEDULED JOBS" ba-panel-class="with-scroll">
-       <!--  <div include-with-scope="app/pages/tables/widgets/editableRowTable.html"></div> -->
-       <cluster></cluster>
+        <scheduleJobs></scheduleJobs> 
+        <apps></apps>
       </div>
     </div> 
-      <div class="col-md-6">
-      <div ba-panel ba-panel-title="JOB HISTORY" ba-panel-class="with-scroll">
-        <!-- <div include-with-scope="app/pages/tables/widgets/editableRowTable.html"></div> -->
-        <cluster></cluster>
-      </div>
-    </div>
   </div>
- 
 </div>

@@ -9,14 +9,14 @@
     'ui.router',
 
     'BlurAdmin.pages.dashboard',
-    'BlurAdmin.pages.ui',
-    'BlurAdmin.pages.components',
+    //'BlurAdmin.pages.ui',
+    //'BlurAdmin.pages.components',
     'BlurAdmin.pages.clusterForm',
     'BlurAdmin.pages.jobForm',
-    'BlurAdmin.pages.tables',
-    'BlurAdmin.pages.charts',
-    'BlurAdmin.pages.maps',
-    'BlurAdmin.pages.profile',
+    //'BlurAdmin.pages.tables',
+    //'BlurAdmin.pages.charts',
+    //'BlurAdmin.pages.maps',
+    //'BlurAdmin.pages.profile',
   ])
       .config(routeConfig);
 
@@ -44,7 +44,7 @@
         blank: true
       }]
     });
-    baSidebarServiceProvider.addStaticItem({
+    /*baSidebarServiceProvider.addStaticItem({
       title: 'Menu Level 1',
       icon: 'ion-ios-more',
       subMenu: [{
@@ -57,7 +57,7 @@
           disabled: true
         }]
       }]
-    });
+    });*/
   }
 
 })();

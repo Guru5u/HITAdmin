@@ -22,7 +22,8 @@
 
              $scope.charts = [{
       //color: pieColor,
-      description: 'Hadoop Clusters - '+response.data.data.hadoop_clusters,
+      color: '#67b7dc',
+      description: 'Hadoop Clusters1 - '+response.data.data.hadoop_clusters,
 
      // stats: '57,820',
       icon: 'face',
@@ -47,7 +48,7 @@
 
         });
      var pieColor = baUtil.hexToRGB(baConfig.colors.defaultText, 0.2);
-    $scope.charts1 = [{
+    /*$scope.charts1 = [{
       //color: pieColor,
       description: 'Hadoop Clusters - ',
 
@@ -69,7 +70,7 @@
       //stats: '32,592',
       icon: 'face',
     }
-    ];
+    ];*/
 
     function getRandomArbitrary(min, max) {
       return Math.random() * (max - min) + min;

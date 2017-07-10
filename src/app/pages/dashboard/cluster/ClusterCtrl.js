@@ -9,16 +9,9 @@
       .controller('ClusterCtrl', ClusterCtrl);
 
   /** @ngInject */
-  function ClusterCtrl($scope,  $http,  $filter, editableOptions, editableThemes) {
+  function ClusterCtrl($scope,  $http, $q, $filter, editableOptions, editableThemes) {
 
     $scope.smartTablePageSize = 10;
-
-    $http.get('http://10.10.200.39:8080/HadoopJobRunner/profile/rest/clusters').
-        then(function(response) {
-            $scope.clusterTableData = response.data.data.clusters;
-        });
-
-
   $scope.removecluster = function(index) {
 
     alert(" in remove "+index);
@@ -26,6 +19,32 @@
       //$scope.clusterData[index].name;
       //alert(" $scope.clusterData[index].name;  "+$scope.clusterData[index].name);
       $scope.clusterTableData.splice(index, 1);
+    };
+
+
+    $scope.addCluster = function() {
+
+    alert(" In addCluster ");
+    jQuery.support.cors = true;
+
+    var clusterData = {
+        "name":$scope.clusterName,
+        "clusterIpAddr":$scope.serverIP,
+      };
+
+    var config = {
+                headers : {
+                    'Content-Type': 'application/json;'
+                }
+            }      
+      $http.get('http://10.10.200.39:8080/HadoopJobRunner/profile/rest/cluster/add', JSON.stringify(clusterData),config).
+        then(function(response) {
+            //var msg = response.data.message;
+            alert("Connection Status : "+response.data.message);
+        },
+        function(response) {
+        alert("Something went wrong");
+      });
     };
 
   $scope.testConnection = function(index) {
@@ -45,83 +64,72 @@
         alert("Something went wrong");
       });
     };
-/************** POST ************************/
-
-  $scope.sendData = function (index) {
-            //alert(' in send data '+index);
-           //alert(" $scope.clusterData[index].name;  "+$scope.clusterData[index].name);
-            var data = $.param({
-                /*fName: $scope.firstName,
-                lName: $scope.lastName*/
-                  "id":"5004",
-                  "name":"Cloudera_RestTest",
-                  "clusterIpAddr":"10.10.200.165"
-            });
-        
-            var config = {
-                headers : {
-                    'Content-Type': 'application/json;'
-                }
-            }
-
-            $http.post(' http://10.10.200.39:8080/HadoopJobRunner/profile/rest/cluster/update', data, config)
-            .success(function (data, status, headers, config) {
-
-              //alert(" Cluster added successfully");
-                //$scope.PostDataResponse = data;
-            })
-            .error(function (data, status, header, config) {
-
-              //alert(" Error Adding cluster");
-                /*$scope.ResponseDetails = "Data: " + data +
-                    "<hr />status: " + status +
-                    "<hr />headers: " + header +
-                    "<hr />config: " + config;*/
-            });
-        };
-
-
-/*************** POST **********************/
-
 /***************************************UI GRID *********************/
 
 $scope.gridOptions1 = {};
-  $scope.gridOptions2 = {};
-
-
+  
   $scope.data1 = [];
     $scope.gridOptions1 = {
       enableGridMenu: true,
-      importerDataAddCallback: function(grid1, newObjects) {
+      enableFiltering: true,
+      /*importerDataAddCallback: function(grid1, newObjects) {
         $scope.data1 = $scope.data1.concat(newObjects);
-      },
+      },*/
       onRegisterApi: function(gridApi1) {
         $scope.gridApi1 = gridApi1;
         gridApi1.edit.on.afterCellEdit($scope, function(rowEntity, newValue, oldValue) {
             //Do your REST call here via $hhtp.get or $http.post
             //This alert just shows which info about the edit is available
             //alert('Column: ' + columnDefs3.I_KEY );
-          });
+
+           });
         gridApi1.rowEdit.on.saveRow($scope, $scope.saveRow1);
-      },
-      data: 'data1'
-    };
+      }
+        //data: 'data1'
+      };
+
+      $http.get("http://10.10.200.39:8080/HadoopJobRunner/profile/rest/clusters")
+    .success(function(data) {
+      /*for( var i=0; i<6; i++){
+        data = data.concat(data);
+      }*/
+      $scope.gridOptions1.data = data.data.clusters;
+    });
 
     $scope.saveRow1 = function(rowEntity) {
-      // create a fake promise - normally you'd use the promise returned by $http or $resource
-      var promise = $q.defer();
-      $scope.gridApi1.rowEdit.setSavePromise(rowEntity, promise.promise);
+      var promise = $scope.saveRowFunction(rowEntity);
+        $scope.gridApi1.rowEdit.setSavePromise(rowEntity, promise);
 
-     // console.log(" rowEntity.I_KEY "+rowEntity.I_KEY  + " === "+rowEntity.I_KEY.length);
-      // fake a delay of 3 seconds whilst the save occurs, return error if gender is "male"
-      $interval(function() {
-          if (rowEntity.Gender === 'male') {
-            alert( 'Ikey cannot be empty');
-            promise.reject();
-          } else {
-            promise.resolve();
-          }
-        }, 3000, 1);
+    };
+
+
+    $scope.saveRowFunction = function(row) {
+      jQuery.support.cors = true;
+
+        var clusterDetails = {
+          "id":row.id,
+          "name":row.name,
+          "clusterIpAddr":row.clusterIpAddr
+      };
+
+    var config = {
+                headers : {
+                    'Content-Type': 'application/json;'
+                }
+            }
+
+            alert('JSON.stringify(clusterDetails) '+JSON.stringify(clusterDetails));
+
+        var deferred = $q.defer();
+        if (row.id == undefined){
+            $http.post('http://10.10.200.39:8080/HadoopJobRunner/profile/rest/cluster/update', JSON.stringify(clusterDetails), config).success(deferred.resolve).error(deferred.reject);
+
+        }else{
+            //console.log("10 put ID: " + row.id);
+            alert('in else');
+            $http.post('http://10.10.200.39:8080/HadoopJobRunner/profile/rest/cluster/update', JSON.stringify(clusterDetails), config).success(deferred.resolve).error(deferred.reject);
+        }
+        return deferred.promise;
     };
 
 /**************************************UI GRID***********************/
@@ -131,7 +139,7 @@ $scope.gridOptions1 = {};
 
 
 
-    $scope.clusterTableData = [  
+    $scope.clusterTableData1 = [  
       {
         "id": 1,
         "name": "cdh4.7.1",

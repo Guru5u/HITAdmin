@@ -30,18 +30,18 @@
     };
 
     $scope.saveRow = function( rowEntity ) {
+      jQuery.support.cors = true;
+
+     
       // create a fake promise - normally you'd use the promise returned by $http or $resource
       var promise = $q.defer();
       $scope.gridApi.rowEdit.setSavePromise( rowEntity, promise.promise );
-     
-      // fake a delay of 3 seconds whilst the save occurs, return error if gender is "male"
-      $interval( function() {
-        if (rowEntity.Gender === 'male' ){
-          promise.reject();
-        } else {
-          promise.resolve();
-        }
-      }, 3000, 1);
+            
+      $http.post('http://10.10.200.39:8080/HadoopJobRunner/profile/rest/cluster/update',row).success(function(){
+      $interval(function(){
+          promise.resolved();
+          },3000, 1)
+      }).error(promise.reject);
     };
     
     var handleFileSelect = function( event ){
@@ -65,38 +65,77 @@
 
 
         /****************************UI Grid *****************************/
+
+    var updateCluster = function () {
+    alert(' in send data '+index);
+    alert(" $scope.clusterTableData[index].id  "+$scope.clusterTableData[index].id);
+    alert(" $scope.clusterTableData[index].name  "+$scope.clusterTableData[index].name);
+    alert(" $scope.clusterTableData[index].clusterIpAddr  "+$scope.clusterTableData[index].clusterIpAddr);
+       jQuery.support.cors = true;
+    alert('Send Request to external server...!');
+    var clusterDetails = {
+        "id":"6009",
+        "name":"Cloudera Test1234",
+        "clusterIpAddr":"10.10.200.165"
+    };
+
+    /*var clusterDetails = {
+        "id":$scope.clusterTableData[index].id,
+        "name":$scope.clusterTableData[index].name,
+        "clusterIpAddr":$scope.clusterTableData[index].clusterIpAddr
+    };*/
+
+    var config = {
+                headers : {
+                    'Content-Type': 'application/json;'
+                }
+            }
+
+     $http.post(' http://10.10.200.39:8080/HadoopJobRunner/profile/rest/cluster/update', JSON.stringify(clusterDetails), config)
+            .success(function (data, status, headers, config) {
+
+              console.log(" Cluster added successfully");
+                $http.get('http://10.10.200.39:8080/HadoopJobRunner/profile/rest/clusters').
+        then(function(response) {
+            $scope.clusterTableData = response.data.data.clusters;
+        });
+            })
+            .error(function (data, status, header, config) {
+
+            });
+ };
+
+
+
+
     
       $scope.addCluster = function() {
-        console.log('==== In addCluster =====');
-        var clusterName = $scope.clusterName;
-        var serverIP = $scope.serverIP;
-        console.log(" clusterName "+clusterName);
-        console.log(" serverIP "+serverIP);
 
-         var data = $.param({
-                  "name":""+clusterName+"",
-                  "clusterIpAddr":""+serverIP+""
-              });
+    alert(" In addCluster ");
+    jQuery.support.cors = true;
 
-         alert( ' data '+data );
-          
-              var config = {
-                  headers : {
-                      'Content-Type': 'application/json;charset=utf-8;'
-                  }
-              }
-
-              $http.post('http://10.10.200.39:8080/HadoopJobRunner/profile/rest/cluster/add', data, config)
-              .success(function (data, status, headers, config) {
-                  $scope.PostDataResponse = data;
-              })
-              .error(function (data, status, header, config) {
-                  $scope.ResponseDetails = "Data: " + data +
-                      "<hr />status: " + status +
-                      "<hr />headers: " + header +
-                      "<hr />config: " + config;
-              });
+    var clusterData = {
+        "name":$scope.clusterName,
+        "clusterIpAddr":$scope.serverIP,
       };
+
+    var config = {
+                headers : {
+                    'Content-Type': 'application/json;'
+                }
+            } 
+
+
+      alert('JSON.stringify(clusterData) '+JSON.stringify(clusterData) );          
+      $http.get('http://10.10.200.39:8080/HadoopJobRunner/profile/rest/cluster/add', JSON.stringify(clusterData),config).
+        then(function(response) {
+            //var msg = response.data.message;
+            alert("Connection Status : "+response.data.message);
+        },
+        function(response) {
+        alert("Something went wrong");
+      });
+    };
 
       $scope.testConnection = function() {
 
